@@ -1,7 +1,7 @@
 FROM node:18
 WORKDIR /app
 COPY package*.json ./
-RUN npm install --force
+RUN yarn install
 COPY . .
-RUN npm run build
+RUN yarn run build
 CMD ["node", "dist/main.js"]
