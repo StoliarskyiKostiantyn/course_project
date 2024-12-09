@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { User } from './user/user.entity';
@@ -10,15 +11,18 @@ import { PostModule } from './post/post.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'database', // Використовуйте ім'я сервісу з docker-compose.yml
-      port: 5432,
-      username: 'test',
-      password: 'test',
-      database: 'test',
+      host: process.env.TYPEORM_HOST,
+      port: parseInt(process.env.TYPEORM_PORT, 10),
+      username: process.env.TYPEORM_USERNAME,
+      password: process.env.TYPEORM_PASSWORD,
+      database: process.env.TYPEORM_DATABASE,
       entities: [User, Post],
-      synchronize: true,
+      synchronize: process.env.TYPEORM_SYNCHRONIZE === 'true',
     }),
     AuthModule,
     UserModule,

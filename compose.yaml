@@ -2,7 +2,7 @@ services:
   app:
     build: .
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=development
       - TYPEORM_CONNECTION=postgres
@@ -16,11 +16,13 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
+    depends_on:
+      - database
     command: yarn run start:dev
   database:
     image: postgres:13
     ports:
-      - "5432:5432"
+      - '5432:5432'
     environment:
       POSTGRES_DB: test
       POSTGRES_USER: test
