@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserService } from '../src/user/user.service';
-import { User } from '../src/user/user.entity';
-import { CreateUserDto } from '../src/user/dto/create-user.dto';
+import { UserService } from './user.service';
+import { User } from './user.entity';
+import { CreateUserDto } from '../user/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 
 describe('UserService', () => {

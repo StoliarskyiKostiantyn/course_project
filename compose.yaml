@@ -1,17 +1,8 @@
 services:
-  database:
-    image: postgres:13
-    ports:
-      - '5432:5432'
-    environment:
-      POSTGRES_DB: test
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
-
   app:
     build: .
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       - NODE_ENV=development
       - TYPEORM_CONNECTION=postgres
@@ -26,13 +17,14 @@ services:
       - .:/app
       - /app/node_modules
     command: yarn run start:dev
-
-  # redis:
-  #   image: redis:6.2-alpine
-  #   restart: always
-  #   env_file:
-  #     - .env
-  #   command: redis-server --save 20 1 --loglevel warning --requirepass ${REDIS_PASSWORD}
+  database:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
 
 volumes:
   db_data:
