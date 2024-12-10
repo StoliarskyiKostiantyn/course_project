@@ -2,7 +2,7 @@ services:
   app:
     build: .
     ports:
-      - '3000:3000'
+      - "3000:3000"
     environment:
       - NODE_ENV=development
       - TYPEORM_CONNECTION=postgres
@@ -13,20 +13,28 @@ services:
       - TYPEORM_DATABASE=test
       - TYPEORM_SYNCHRONIZE=true
       - TYPEORM_ENTITIES=dist/**/*.entity.js
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     volumes:
       - .:/app
       - /app/node_modules
     depends_on:
       - database
+      - redis
     command: yarn run start:dev
   database:
     image: postgres:13
     ports:
-      - '5432:5432'
+      - "5432:5432"
     environment:
       POSTGRES_DB: test
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
+  redis:
+    restart: unless-stopped
+    image: redis:alpine
+    ports:
+      - 127.0.0.1:6379:6379
 
 volumes:
   db_data:
