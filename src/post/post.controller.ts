@@ -14,13 +14,14 @@ import { Post as PostEntity } from './post.entity';
 import { AuthGuard } from '../auth/auth.guard';
 import { RequestWithUser } from '../auth/request-with-user.interface';
 import { ApiTags, ApiBearerAuth, ApiBody } from '@nestjs/swagger';
+import { Cache } from 'cache-manager';
 
 @ApiTags('posts')
 @Controller('posts')
 export class PostController {
   constructor(
     private readonly postService: PostService,
-    @Inject(CACHE_MANAGER) private cacheManager,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
   ) {}
 
   @UseGuards(AuthGuard)
@@ -41,7 +42,7 @@ export class PostController {
   async findAll(@Req() req: RequestWithUser): Promise<PostEntity[]> {
     const userId = req.user.id;
     const cacheKey = `user_posts_${userId}`;
-    const cachedPosts = await this.cacheManager.get(cacheKey);
+    const cachedPosts = await this.cacheManager.get<PostEntity[]>(cacheKey);
 
     if (cachedPosts) {
       console.log('Returning cached posts');
